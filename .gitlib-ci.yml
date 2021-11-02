@@ -1,0 +1,67 @@
+
+
+before_script:
+  - docker login -u admin -p Harbor12345 202.1.1.102
+
+stages:
+  - build-push
+
+itmk-eureka:
+  stage: build-push
+  tags:
+    - itmk
+  script:
+    - cd itmk-eureka
+    - mvn clean package -Dmaven.test.skip=true
+    - docker build -t 202.1.1.102/itmk/itmk-eureka:latest .
+    - docker push 202.1.1.102/itmk/itmk-eureka:latest
+    - docker rmi 202.1.1.102/itmk/itmk-eureka:latest
+    - cd ../
+    - echo itmk-eureka build successfully
+  only:
+      - web
+
+itmk-config:
+  stage: build-push
+  tags:
+    - itmk
+  script:
+    - cd itmk-config
+    - mvn clean package -Dmaven.test.skip=true
+    - docker build -t 202.1.1.102/itmk/itmk-config:latest .
+    - docker push 202.1.1.102/itmk/itmk-config:latest
+    - docker rmi 202.1.1.102/itmk/itmk-config:latest
+    - cd ../
+    - echo itmk-config build successfully
+  only:
+      - web
+
+itmk-demo:
+  stage: build-push
+  tags:
+    - itmk
+  script:
+    - cd itmk-demo
+    - mvn clean package -Dmaven.test.skip=true
+    - docker build -t 202.1.1.102/itmk/itmk-demo:latest .
+    - docker push 202.1.1.102/itmk/itmk-demo:latest
+    - docker rmi 202.1.1.102/itmk/itmk-demo:latest
+    - cd ../
+    - echo itmk-demo build successfully
+  only:
+    - web
+
+itmk-usentity:
+  stage: build-push
+  tags:
+    - itmk
+  script:
+    - cd itmk-usentity
+    - mvn clean package -Dmaven.test.skip=true
+    - docker build -t 202.1.1.102/itmk/itmk-usentity:latest .
+    - docker push 202.1.1.102/itmk/itmk-usentity:latest
+    - docker rmi 202.1.1.102/itmk/itmk-usentity:latest
+    - cd ../
+    - echo itmk-usentity build successfully
+  only:
+      - web
